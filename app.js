@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 
 // express app
 const app = express();
@@ -8,7 +9,20 @@ app.listen(3000);
 
 // register view engine
 app.set('view engine', 'ejs');
-// app.set('views', 'myviews');
+
+  // clunky manual middleware for logging...
+    // app.use((req, res, next) => {
+    //   console.log('--- new request made ---');
+    //   console.log('host: ' + req.hostname);
+    //   console.log('path: ' + req.path);
+    //   console.log('method: ' + req.method);
+    //   next();
+    // });
+
+  // better pre-made middleware for logging...
+  app.use(morgan('dev'));  
+  // express middleware for static files...
+  app.use(express.static('public'));
 
 app.get('/', (req, res) => {
   const blogs = [
