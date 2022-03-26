@@ -39,7 +39,7 @@ app.get('/add-blog', (req, res) => {
     snippet: "my other blog is a blog",
     body: "Blogging is easy until you bloggy blog blog."
   });
-
+  // blog is an instance of Blog used to modify
   blog.save()
     .then((result) => {
       res.send(result)
@@ -49,13 +49,31 @@ app.get('/add-blog', (req, res) => {
     })
 });  
 
+
+// app.get('/single-blog', (req, res) => {
+//   Blog.findById('623e88a61ac56e702d81cab7')
+//     .then((result) => {
+//       res.send(result)
+//     })
+//   .catch((err) => {
+//     console.log(err);
+//   })
+// });
+
+
 app.get('/', (req, res) => {
-  const blogs = [
-    {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-  ];
-  res.render('index', { title: 'Home', blogs });
+  res.redirect('/blogs');
+});
+
+app.get('/blogs', (req, res) => {
+  // let blogs = [];   dont need this if passing via options object in res.render()
+  Blog.find().sort({ createdAt: -1})
+    .then((result) => {
+      res.render('index', { title: 'All Blogs', blogs: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 });
 
 app.get('/about', (req, res) => {
