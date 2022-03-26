@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const Blog = require('./models/blog');
 const mongoose = require('mongoose');
 const dbURI = "mongodb+srv://websnoot:Farmu5e678!@nodedb.t36od.mongodb.net/nodedb?retryWrites=true&w=majority";
 
@@ -31,6 +32,22 @@ app.set('view engine', 'ejs');
   app.use(morgan('dev'));  
   // express middleware for static files...
   app.use(express.static('public'));
+
+app.get('/add-blog', (req, res) => {
+  const blog = new Blog({
+    title: "Why to blog",
+    snippet: "my other blog is a blog",
+    body: "Blogging is easy until you bloggy blog blog."
+  });
+
+  blog.save()
+    .then((result) => {
+      res.send(result)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+});  
 
 app.get('/', (req, res) => {
   const blogs = [
