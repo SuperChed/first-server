@@ -1,11 +1,19 @@
 const express = require('express');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
+const dbURI = "mongodb+srv://websnoot:Farmu5e678!@nodedb.t36od.mongodb.net/nodedb?retryWrites=true&w=majority";
+
+// connect to mongodb - this is async
+mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
+  .then((res) => {
+    // don't let server listen for user requests until db connection is ready
+    console.log('connected to db!')
+    app.listen(3000)
+  })
+  .catch((err) => console.log(err));
 
 // express app
 const app = express();
-
-// listen for requests
-app.listen(3000);
 
 // register view engine
 app.set('view engine', 'ejs');
