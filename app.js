@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const Blog = require('./models/blog');
 const mongoose = require('mongoose');
+const { render } = require('ejs');
 const dbURI = "mongodb+srv://websnoot:Farmu5e678!@nodedb.t36od.mongodb.net/nodedb?retryWrites=true&w=majority";
 
 // connect to mongodb - this is async
@@ -32,6 +33,8 @@ app.set('view engine', 'ejs');
   app.use(morgan('dev'));  
   // express middleware for static files...
   app.use(express.static('public'));
+  // express middleware for encoding POST request
+  app.use(express.urlencoded({ extended: true }));
 
 app.get('/add-blog', (req, res) => {
   const blog = new Blog({
@@ -75,6 +78,28 @@ app.get('/blogs', (req, res) => {
       console.log(err);
     })
 });
+
+app.post('/blogs', (req, res) => {
+  const blog = new Blog(req.body);
+
+  blog.save()
+    .then((result) => {
+      res.redirect('/blogs');
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+});
+
+app.get('/blogs/:id', (req, res) => {
+  const id = req.params.id;
+  Blog.findById(id)
+    .then(result => {
+        res.render('details', {blog: result, title: 'Blog Details'})
+    })
+    .catch((err) => console.log(err))
+});
+
 
 app.get('/about', (req, res) => {
   res.render('about', { title: 'About' });
