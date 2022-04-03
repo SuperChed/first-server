@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const blogRoutes = require('./routes/blogRoutes');
 const mongoose = require('mongoose');
 const { render } = require('ejs');
-const dbURI = "mongodb+srv://websnoot:Farmu5e678!@nodedb.t36od.mongodb.net/nodedb?retryWrites=true&w=majority";
+const dbURI = "EDITED";
 
 // connect to mongodb - this is async
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
